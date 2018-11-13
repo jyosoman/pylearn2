@@ -8,11 +8,11 @@ import theano
 
 # Skip test if cuda_ndarray is not available.
 from nose.plugins.skip import SkipTest
-import theano.sandbox.cuda as cuda_ndarray
+import theano.gpuarray as cuda_ndarray
 if cuda_ndarray.cuda_available == False:
         raise SkipTest('Optional package cuda disabled')
 
-from theano.sandbox.cuda.var import float32_shared_constructor
+from theano.gpuarray.var import float32_shared_constructor
 
 from .unshared_conv import FilterActs
 from .unshared_conv import WeightActs
@@ -56,7 +56,7 @@ class TestGpuFilterActs(test_unshared_conv.TestFilterActs):
                 self.s_filters.get_value())
 
     def test_gpu_shape(self):
-        import theano.sandbox.cuda as cuda_ndarray
+        import theano.gpuarray as cuda_ndarray
         if cuda_ndarray.cuda_available == False:
             raise SkipTest('Optional package cuda disabled')
         gpuout = self.gpu_op(self.s_images, self.s_filters)

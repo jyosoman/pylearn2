@@ -8,7 +8,7 @@ __license__ = "3-clause BSD"
 __maintainer__ = "LISA Lab"
 __email__ = "pylearn-dev@googlegroups"
 
-from theano.compat.six.moves import xrange
+from six.moves import xrange
 import theano.tensor as T
 
 from pylearn2.sandbox.cuda_convnet.response_norm import CrossMapNorm
@@ -142,5 +142,5 @@ class CudaConvNetCrossChannelNormalization(object):
 
             WRITEME properly
 
-        NOTE: c01b must be CudaNdarrayType."""
+        NOTE: c01b must be GpuArrayType."""
         return self._op(c01b)[0]

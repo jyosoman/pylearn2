@@ -20,14 +20,14 @@ import logging
 import numpy as np
 import warnings
 
-from theano.compat.six.moves import xrange
+from six.moves import xrange
 from theano.sandbox import cuda
 import theano.tensor as T
 
 if cuda.cuda_available:
-    from theano.sandbox.cuda.basic_ops import gpu_contiguous
-    from theano.sandbox.cuda import gpu_from_host
-    from theano.sandbox.cuda import host_from_gpu
+    from theano.gpuarray.basic_ops import gpu_contiguous
+    from theano.gpuarray import gpu_from_host
+    from theano.gpuarray import host_from_gpu
 
 from pylearn2.compat import OrderedDict
 from pylearn2.linear.conv2d import default_seed, default_sparse_seed

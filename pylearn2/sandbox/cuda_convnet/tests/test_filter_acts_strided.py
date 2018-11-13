@@ -6,19 +6,19 @@ from pylearn2.testing.skip import skip_if_no_gpu
 skip_if_no_gpu()
 
 import numpy as np
-from theano.compat.six.moves import xrange
+from six.moves import xrange
 from theano import shared
 from theano.tensor import grad, constant
 from pylearn2.sandbox.cuda_convnet.filter_acts import FilterActs
-from theano.sandbox.cuda import gpu_from_host
-from theano.sandbox.cuda import host_from_gpu
+from theano.gpuarray import gpu_from_host
+from theano.gpuarray import host_from_gpu
 from theano.sandbox.rng_mrg import MRG_RandomStreams
 from theano.tensor.nnet.conv import conv2d
 from theano import function
 from theano import tensor as T
 import warnings
 from theano.sandbox import cuda
-from theano.sandbox.cuda.var import float32_shared_constructor 
+from theano.gpuarray.var import float32_shared_constructor 
 
 def FilterActs_python(images,
                       filters,

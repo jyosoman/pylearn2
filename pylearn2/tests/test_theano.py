@@ -133,11 +133,11 @@ dataset: &train
     try:
         orig_floatX = theano.config.floatX
         theano.config.floatX = 'float32'
-        theano.sandbox.cuda.use('gpu')
+        theano.gpuarray.use('gpu')
         x_size, y_size = 4, 4
         parameters = {'xsize': x_size, 'ysize': y_size}
         test = yaml_parse.load(yaml_string % parameters)
         test.main_loop()
     finally:
         theano.config.floatX = orig_floatX
-        theano.sandbox.cuda.unuse()
+        theano.gpuarray.unuse()

@@ -11,8 +11,8 @@ import logging
 import numpy as np
 from theano import shared
 from pylearn2.sandbox.cuda_convnet.filter_acts import FilterActs
-from theano.sandbox.cuda import gpu_from_host
-from theano.sandbox.cuda import host_from_gpu
+from theano.gpuarray import gpu_from_host
+from theano.gpuarray import host_from_gpu
 from theano.tensor.nnet.conv import conv2d
 from theano import function
 

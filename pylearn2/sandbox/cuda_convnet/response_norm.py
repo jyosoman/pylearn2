@@ -46,9 +46,9 @@ The copyright and licensing notice for this code is reproduced below:
 """
 
 import theano
-from theano.sandbox.cuda import CudaNdarrayType
-from theano.sandbox.cuda.basic_ops import as_cuda_ndarray_variable
-from theano.sandbox.cuda.basic_ops import gpu_contiguous
+from theano.gpuarray import GpuArrayType
+from theano.gpuarray.basic_ops import as_cuda_ndarray_variable
+from theano.gpuarray.basic_ops import gpu_contiguous
 from theano.gof import Apply, local_optimizer, TopoOptimizer
 
 from pylearn2.sandbox.cuda_convnet.base_acts import BaseActs
@@ -149,14 +149,14 @@ class CrossMapNorm(BaseActs):
 
             WRITEME
         """
-        if not isinstance(images.type, CudaNdarrayType):
-            raise TypeError("CrossMapNorm: expected images.type to be CudaNdarrayType, "
+        if not isinstance(images.type, GpuArrayType):
+            raise TypeError("CrossMapNorm: expected images.type to be GpuArrayType, "
                     "got " + str(images.type))
 
         assert images.ndim == 4
 
         targets_broadcastable = images.type.broadcastable
-        targets_type = CudaNdarrayType(broadcastable=targets_broadcastable)
+        targets_type = GpuArrayType(broadcastable=targets_broadcastable)
         denoms = targets_type()
         targets = targets_type()
 
@@ -284,13 +284,13 @@ class CrossMapNormUndo(CrossMapNorm):
 
             WRITEME
         """
-        if not isinstance(images.type, CudaNdarrayType):
+        if not isinstance(images.type, GpuArrayType):
             inputs = images, acts, denoms, dout
             names = "images", "acts", "denoms", "dout"
             for name, var in zip(names, inputs):
-                if not isinstance(var.type, CudaNdarrayType):
+                if not isinstance(var.type, GpuArrayType):
                     raise TypeError("CrossMapNormUndo: expected %s.type "
-                                    "to be CudaNdarrayType, "
+                                    "to be GpuArrayType, "
                                     "got %s" (name, str(images.type)))
         assert images.ndim == 4
         assert acts.ndim == 4
@@ -302,7 +302,7 @@ class CrossMapNormUndo(CrossMapNorm):
         assert images.type.broadcastable == dout.type.broadcastable
 
         targets_broadcastable = tuple(images.type.broadcastable)
-        targets_type = CudaNdarrayType(broadcastable=targets_broadcastable)
+        targets_type = GpuArrayType(broadcastable=targets_broadcastable)
         targets = targets_type()
         out_acts = targets_type()
         return Apply(self, [images, acts, denoms, dout], [targets, out_acts])

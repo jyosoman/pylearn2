@@ -11,7 +11,7 @@ import numpy as np
 from theano import shared
 from pylearn2.sandbox.cuda_convnet.filter_acts import FilterActs
 from pylearn2.sandbox.cuda_convnet.img_acts import ImageActs
-from theano.sandbox.cuda import gpu_from_host
+from theano.gpuarray import gpu_from_host
 from theano import function
 from theano.tensor import as_tensor_variable
 

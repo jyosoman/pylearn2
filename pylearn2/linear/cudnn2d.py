@@ -10,8 +10,8 @@ __maintainer__ = "Lisa Lab"
 import functools
 import numpy as np
 
-from theano.sandbox.cuda.dnn import GpuDnnConv, GpuDnnConvDesc
-from theano.sandbox.cuda.basic_ops import gpu_contiguous, gpu_alloc_empty
+from theano.gpuarray.dnn import GpuDnnConv, GpuDnnConvDesc
+from theano.gpuarray.basic_ops import gpu_contiguous, gpu_alloc_empty
 
 from pylearn2.packaged_dependencies.theano_linear.conv2d \
     import Conv2d as OrigConv2D

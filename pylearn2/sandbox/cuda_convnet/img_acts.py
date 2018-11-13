@@ -43,8 +43,8 @@ The copyright and licensing notice for this code is reproduced below:
 
 from theano.gradient import DisconnectedType
 from theano.gof import Apply
-from theano.sandbox.cuda import CudaNdarrayType
-from theano.sandbox.cuda.basic_ops import as_cuda_ndarray_variable
+from theano.gpuarray import GpuArrayType
+from theano.gpuarray.basic_ops import as_cuda_ndarray_variable
 
 from pylearn2.sandbox.cuda_convnet.base_acts import BaseActs
 from pylearn2.sandbox.cuda_convnet.base_acts import UnimplementedError
@@ -102,12 +102,12 @@ class ImageActs(BaseActs):
             The spatial shape of the image
         """
 
-        if not isinstance(hid_acts.type, CudaNdarrayType):
-            raise TypeError("ImageActs: expected hid_acts.type to be CudaNdarrayType, "
+        if not isinstance(hid_acts.type, GpuArrayType):
+            raise TypeError("ImageActs: expected hid_acts.type to be GpuArrayType, "
                     "got " + str(hid_acts.type))
 
-        if not isinstance(filters.type, CudaNdarrayType):
-            raise TypeError("ImageActs: expected filters.type to be CudaNdarrayType, "
+        if not isinstance(filters.type, GpuArrayType):
+            raise TypeError("ImageActs: expected filters.type to be GpuArrayType, "
                     "got " + str(filters.type))
 
 
@@ -131,7 +131,7 @@ class ImageActs(BaseActs):
 
         targets_broadcastable = (channels_broadcastable, rows_broadcastable,
                 cols_broadcastable, batch_broadcastable)
-        targets_type = CudaNdarrayType(broadcastable=targets_broadcastable)
+        targets_type = GpuArrayType(broadcastable=targets_broadcastable)
         targets = targets_type()
 
         return Apply(self, [hid_acts, filters, output_shape], [targets])

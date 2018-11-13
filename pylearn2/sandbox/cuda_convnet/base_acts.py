@@ -47,7 +47,7 @@ import warnings
 import theano
 from theano.compat import get_unbound_function
 from theano import config
-from theano.sandbox.cuda import GpuOp
+from theano.gpuarray import GpuOp
 
 from pylearn2.sandbox.cuda_convnet.shared_code import this_dir
 from pylearn2.sandbox.cuda_convnet.convnet_compile import convnet_available

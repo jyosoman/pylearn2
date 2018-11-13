@@ -35,13 +35,13 @@ __email__ = "pylearn-dev@googlegroups"
 import functools
 import warnings
 import numpy as np
-from theano.compat.six.moves import xrange
+from six.moves import xrange
 import theano
 import theano.sparse
 from theano import tensor
 from theano.tensor import TensorType
 from theano.gof.op import get_debug_values
-from theano.sandbox.cuda.type import CudaNdarrayType
+from theano.gpuarray.type import GpuArrayType
 from pylearn2.utils import py_integer_types, safe_zip, sharedX, wraps
 from pylearn2.format.target_format import OneHotFormatter
 
@@ -113,7 +113,7 @@ def is_numeric_batch(batch):
     """
     def is_numeric(batch):
         # Uses the 'CudaNdarray' string to avoid importing
-        # theano.sandbox.cuda when it is not available
+        # theano.gpuarray when it is not available
         return (isinstance(batch, np.ndarray) or
                 scipy.sparse.issparse(batch) or
                 str(type(batch)) == "<type 'CudaNdarray'>")
@@ -206,7 +206,7 @@ def _cast(arg, dtype):
         else:
             return arg
     elif (isinstance(arg, theano.gof.Variable) and
-          isinstance(arg.type, CudaNdarrayType)):  # symbolic CUDA array
+          isinstance(arg.type, GpuArrayType)):  # symbolic CUDA array
         if str(dtype) != 'float32':
             raise TypeError("Can only cast a theano CudaNdArrayType to "
                             "float32, not %s" % dtype)
@@ -218,7 +218,7 @@ def _cast(arg, dtype):
         return theano.tensor.cast(arg, dtype)
     elif isinstance(arg, theano.sparse.SparseVariable):
         return theano.sparse.cast(arg, dtype)
-    elif isinstance(arg, theano.sandbox.cuda.var.CudaNdarrayVariable):
+    elif isinstance(arg, theano.gpuarray.var.CudaNdarrayVariable):
         return arg
     else:
         raise TypeError("Unsupported arg type '%s'" % str(type(arg)))
@@ -1097,7 +1097,7 @@ class IndexSpace(SimplyTypedSpace):
 
         if is_numeric:
             # Use the 'CudaNdarray' string to avoid importing
-            # theano.sandbox.cuda when it is not available
+            # theano.gpuarray when it is not available
             if not isinstance(batch, np.ndarray) \
                and str(type(batch)) != "<type 'CudaNdarray'>":
                 raise TypeError("The value of a IndexSpace batch should be a "
@@ -1117,9 +1117,9 @@ class IndexSpace(SimplyTypedSpace):
                 raise TypeError("IndexSpace batch should be a theano "
                                 "Variable, got " + str(type(batch)))
             if not isinstance(batch.type, (theano.tensor.TensorType,
-                                           CudaNdarrayType)):
+                                           GpuArrayType)):
                 raise TypeError("IndexSpace batch should be TensorType or "
-                                "CudaNdarrayType, got " + str(batch.type))
+                                "GpuArrayType, got " + str(batch.type))
             if batch.ndim != 2:
                 raise ValueError('IndexSpace batches must be 2D, got %d '
                                  'dimensions' % batch.ndim)
@@ -1452,9 +1452,9 @@ class VectorSpace(SimplyTypedSpace):
                                     % ('' if self.sparse else ' not',
                                        type(batch)))
             elif not isinstance(batch.type, (theano.tensor.TensorType,
-                                             CudaNdarrayType)):
+                                             GpuArrayType)):
                 raise TypeError("VectorSpace batch should be TensorType or "
-                                "CudaNdarrayType, got " + str(batch.type))
+                                "GpuArrayType, got " + str(batch.type))
 
             if batch.ndim != 2:
                 raise ValueError('VectorSpace batches must be 2D, got %d '
@@ -1463,7 +1463,7 @@ class VectorSpace(SimplyTypedSpace):
                 self.np_validate(val)  # sic; val is numeric, not symbolic
         else:
             # Use the 'CudaNdarray' string to avoid importing
-            # theano.sandbox.cuda when it is not available
+            # theano.gpuarray when it is not available
             if (not self.sparse
                     and not isinstance(batch, np.ndarray)
                     and type(batch) != 'CudaNdarray'):
@@ -1563,7 +1563,7 @@ class VectorSequenceSpace(SimplyTypedSpace):
 
         if is_numeric:
             # Use the 'CudaNdarray' string to avoid importing
-            # theano.sandbox.cuda when it is not available
+            # theano.gpuarray when it is not available
             if not isinstance(batch, np.ndarray) \
                and str(type(batch)) != "<type 'CudaNdarray'>":
                 raise TypeError("The value of a VectorSequenceSpace batch "
@@ -1584,9 +1584,9 @@ class VectorSequenceSpace(SimplyTypedSpace):
                 raise TypeError("VectorSequenceSpace batch should be a theano "
                                 "Variable, got " + str(type(batch)))
             if not isinstance(batch.type, (theano.tensor.TensorType,
-                                           CudaNdarrayType)):
+                                           GpuArrayType)):
                 raise TypeError("VectorSequenceSpace batch should be "
-                                "TensorType or CudaNdarrayType, got " +
+                                "TensorType or GpuArrayType, got " +
                                 str(batch.type))
             if batch.ndim != 2:
                 raise ValueError("VectorSequenceSpace 'batches' must be 2D, "
@@ -1712,7 +1712,7 @@ class IndexSequenceSpace(SimplyTypedSpace):
 
         if is_numeric:
             # Use the 'CudaNdarray' string to avoid importing
-            # theano.sandbox.cuda when it is not available
+            # theano.gpuarray when it is not available
             if not isinstance(batch, np.ndarray) \
                and str(type(batch)) != "<type 'CudaNdarray'>":
                 raise TypeError("The value of a IndexSequenceSpace batch "
@@ -1732,9 +1732,9 @@ class IndexSequenceSpace(SimplyTypedSpace):
                 raise TypeError("IndexSequenceSpace batch should be a theano "
                                 "Variable, got " + str(type(batch)))
             if not isinstance(batch.type, (theano.tensor.TensorType,
-                                           CudaNdarrayType)):
+                                           GpuArrayType)):
                 raise TypeError("IndexSequenceSpace batch should be "
-                                "TensorType or CudaNdarrayType, got " +
+                                "TensorType or GpuArrayType, got " +
                                 str(batch.type))
             if batch.ndim != 2:
                 raise ValueError('IndexSequenceSpace batches must be 2D, got '
@@ -1977,7 +1977,7 @@ class Conv2DSpace(SimplyTypedSpace):
                                 "Variables, got " + str(type(batch)))
 
             if not isinstance(batch.type, (theano.tensor.TensorType,
-                                           CudaNdarrayType)):
+                                           GpuArrayType)):
                 raise TypeError('Expected TensorType or CudaNdArrayType, got '
                                 '"%s"' % type(batch.type))
 

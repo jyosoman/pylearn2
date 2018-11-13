@@ -6,7 +6,7 @@ import numpy
 import theano
 from theano.tensor import grad
 from theano.tests import unittest_tools
-import theano.sandbox.cuda as tcn
+import theano.gpuarray as tcn
 
 if not tcn.cuda_available:
     from nose.plugins.skip import SkipTest

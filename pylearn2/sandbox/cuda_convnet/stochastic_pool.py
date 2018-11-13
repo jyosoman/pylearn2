@@ -18,10 +18,10 @@ import warnings
 import numpy
 from theano import shared
 from theano.gof import Apply
-from theano.sandbox.cuda import CudaNdarrayType
-from theano.sandbox.cuda.basic_ops import as_cuda_ndarray_variable
-from theano.sandbox.cuda.basic_ops import gpu_contiguous
-from theano.sandbox.cuda import GpuOp
+from theano.gpuarray import GpuArrayType
+from theano.gpuarray.basic_ops import as_cuda_ndarray_variable
+from theano.gpuarray.basic_ops import gpu_contiguous
+from theano.gpuarray import GpuOp
 from theano.tensor import get_scalar_constant_value, NotScalarConstantError, zeros_like
 from pylearn2.sandbox.cuda_convnet.base_acts import UnimplementedError
 from pylearn2.sandbox.cuda_convnet.convnet_compile import convnet_available
@@ -203,7 +203,7 @@ class StochasticMaxPool(GpuOp):
 
         targets_broadcastable = (channels_broadcastable, rows_broadcastable,
                 cols_broadcastable, batch_broadcastable)
-        targets_type = CudaNdarrayType(broadcastable=targets_broadcastable)
+        targets_type = GpuArrayType(broadcastable=targets_broadcastable)
         targets = targets_type()
         seed = self.seed_state
         seed = as_cuda_ndarray_variable(seed)
@@ -487,7 +487,7 @@ class WeightedMaxPool(GpuOp):
 
         targets_broadcastable = (channels_broadcastable, rows_broadcastable,
                 cols_broadcastable, batch_broadcastable)
-        targets_type = CudaNdarrayType(broadcastable=targets_broadcastable)
+        targets_type = GpuArrayType(broadcastable=targets_broadcastable)
         targets = targets_type()
 
         return Apply(self, [images], [targets])

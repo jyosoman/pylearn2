@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     obj = serial.load(path)
 
-    from theano.sandbox.cuda import CudaNdarray
+    from theano.gpuarray import CudaNdarray
 
     visited = set([])
 

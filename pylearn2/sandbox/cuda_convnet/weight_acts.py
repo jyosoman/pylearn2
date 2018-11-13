@@ -42,7 +42,7 @@ The copyright and licensing notice for this code is reproduced below:
 """
 
 from theano.misc.strutil import render_string
-from theano.sandbox.cuda import CudaNdarrayType
+from theano.gpuarray import GpuArrayType
 from theano.gof import Apply
 from pylearn2.sandbox.cuda_convnet.base_acts import BaseActs
 from pylearn2.sandbox.cuda_convnet.base_acts import UnimplementedError
@@ -88,14 +88,14 @@ class WeightActs(BaseActs):
 
             WRITEME
         """
-        if not isinstance(images.type, CudaNdarrayType):
+        if not isinstance(images.type, GpuArrayType):
             raise TypeError("WeightActs: expected images.type "
-                            "to be CudaNdarrayType, "
+                            "to be GpuArrayType, "
                             "got " + str(images.type))
 
-        if not isinstance(hid_grads.type, CudaNdarrayType):
+        if not isinstance(hid_grads.type, GpuArrayType):
             raise TypeError("WeightActs: expected hid_acts.type "
-                            "to be CudaNdarrayType, "
+                            "to be GpuArrayType, "
                             "got " + str(hid_grads.type))
 
         assert images.ndim == 4
@@ -108,13 +108,13 @@ class WeightActs(BaseActs):
         filter_cols_broadcastable = False
         output_channels_broadcastable = hid_grads.type.broadcastable[0]
 
-        weights_grads_type = CudaNdarrayType(
+        weights_grads_type = GpuArrayType(
                 (input_channels_broadcastable,
                  filter_rows_broadcastable,
                  filter_cols_broadcastable,
                  output_channels_broadcastable))
 
-        partial_sums_type = CudaNdarrayType(
+        partial_sums_type = GpuArrayType(
             (False,) * 5
         )
         weights_grads = weights_grads_type()

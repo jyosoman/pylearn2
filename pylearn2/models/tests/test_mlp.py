@@ -6,13 +6,13 @@ from nose.tools import assert_raises
 from nose.plugins.skip import SkipTest
 import numpy as np
 
-from theano.compat import six
-from theano.compat.six.moves import reduce, xrange
+import six
+from six.moves import reduce, xrange
 import theano
 from theano import tensor, config
 T = tensor
 from theano.sandbox import cuda
-from theano.sandbox.cuda.dnn import dnn_available
+from theano.gpuarray.dnn import dnn_available
 from nose.tools import assert_raises
 
 from pylearn2.datasets.vector_spaces_dataset import VectorSpacesDataset

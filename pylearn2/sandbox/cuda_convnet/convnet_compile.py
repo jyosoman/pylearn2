@@ -9,7 +9,7 @@ from theano import config
 from theano.gof.cmodule import get_lib_extension
 from theano.gof.compilelock import get_lock, release_lock
 from theano.sandbox import cuda
-from theano.sandbox.cuda import nvcc_compiler
+from theano.gpuarray import nvcc_compiler
 
 from .shared_code import this_dir
 

@@ -14,8 +14,8 @@ import numpy as np
 import warnings
 
 from theano import function
-from theano.sandbox.cuda import gpu_from_host
-from theano.sandbox.cuda import host_from_gpu
+from theano.gpuarray import gpu_from_host
+from theano.gpuarray import host_from_gpu
 from theano.sandbox.rng_mrg import MRG_RandomStreams
 from theano import shared
 from theano import tensor as T

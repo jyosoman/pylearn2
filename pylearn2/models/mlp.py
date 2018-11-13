@@ -14,12 +14,12 @@ import sys
 import warnings
 
 import numpy as np
-from theano.compat import six
-from theano.compat.six.moves import reduce, xrange
+import six
+from six.moves import reduce, xrange
 from theano import config
 from theano.gof.op import get_debug_values
-from theano.sandbox.cuda import cuda_enabled
-from theano.sandbox.cuda.dnn import dnn_available, dnn_pool
+from theano.gpuarray import cuda_enabled
+from theano.gpuarray.dnn import dnn_available, dnn_pool
 from theano.sandbox.rng_mrg import MRG_RandomStreams
 from theano.tensor.signal.pool import pool_2d
 import theano.tensor as T

@@ -9,7 +9,7 @@ __maintainer__ = "Lisa Lab"
 
 import theano
 from theano import tensor
-from theano.sandbox.cuda.dnn import dnn_available
+from theano.gpuarray.dnn import dnn_available
 
 from pylearn2.linear.conv2d import Conv2D
 from pylearn2.linear.cudnn2d import Cudnn2D, make_random_conv2D

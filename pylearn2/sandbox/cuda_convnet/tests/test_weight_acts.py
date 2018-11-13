@@ -14,8 +14,8 @@ import numpy as np
 from theano import shared
 from pylearn2.sandbox.cuda_convnet.filter_acts import FilterActs
 from pylearn2.sandbox.cuda_convnet.weight_acts import WeightActs
-from theano.sandbox.cuda import gpu_from_host
-from theano.sandbox.cuda import host_from_gpu
+from theano.gpuarray import gpu_from_host
+from theano.gpuarray import host_from_gpu
 from theano.sandbox.rng_mrg import MRG_RandomStreams
 import theano.tensor as T
 from theano.tensor.nnet.conv import conv2d

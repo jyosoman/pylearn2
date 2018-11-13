@@ -31,10 +31,10 @@ import theano
 import numpy
 from theano import tensor
 from theano.gof import Apply
-from theano.sandbox.cuda import CudaNdarrayType
-from theano.sandbox.cuda.basic_ops import as_cuda_ndarray_variable
-from theano.sandbox.cuda.basic_ops import gpu_contiguous
-from theano.sandbox.cuda import GpuOp
+from theano.gpuarray import GpuArrayType
+from theano.gpuarray.basic_ops import as_cuda_ndarray_variable
+from theano.gpuarray.basic_ops import gpu_contiguous
+from theano.gpuarray import GpuOp
 from theano.tensor import get_scalar_constant_value, NotScalarConstantError
 
 from pylearn2.sandbox.cuda_convnet.base_acts import UnimplementedError
@@ -217,12 +217,12 @@ class ProbMaxPool(GpuOp):
 
         houtput_broadcastable = (channels_broadcastable, rows_broadcastable,
                 cols_broadcastable, batch_broadcastable)
-        houtput_type = CudaNdarrayType(broadcastable=houtput_broadcastable)
+        houtput_type = GpuArrayType(broadcastable=houtput_broadcastable)
         houtput = houtput_type()
 
         poutput_broadcastable = (channels_broadcastable, rows_broadcastable,
                 cols_broadcastable, batch_broadcastable)
-        poutput_type = CudaNdarrayType(broadcastable=poutput_broadcastable)
+        poutput_type = GpuArrayType(broadcastable=poutput_broadcastable)
         poutput = poutput_type()
 
         return Apply(self, [images, top_down], [houtput, poutput])

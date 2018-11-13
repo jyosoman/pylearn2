@@ -8,11 +8,11 @@ import os
 import StringIO
 
 import theano
-from theano.sandbox.cuda import CudaNdarrayType
+from theano.gpuarray import GpuArrayType
 from theano.gof import local_optimizer
-from theano.sandbox.cuda.opt import register_opt
-from theano.sandbox.cuda import gpu_from_host, host_from_gpu
-from theano.sandbox.cuda.basic_ops import gpu_contiguous
+from theano.gpuarray.opt import register_opt
+from theano.gpuarray import gpu_from_host, host_from_gpu
+from theano.gpuarray.basic_ops import gpu_contiguous
 
 from .unshared_conv import FilterActs
 from .unshared_conv import WeightActs
@@ -122,13 +122,13 @@ class GpuFilterActs(Base):
         fmodulesR, fmodulesC, fcolors, frows, fcols = fbcast[:-2]
         fgroups, filters_per_group = fbcast[-2:]
         hbcast = (fgroups, filters_per_group, fmodulesR, fmodulesC, icount)
-        if not isinstance(images.type, CudaNdarrayType):
+        if not isinstance(images.type, GpuArrayType):
             raise TypeError('gpu_filter_acts requires CudaNdarray images',
                     images)
-        if not isinstance(filters.type, CudaNdarrayType):
+        if not isinstance(filters.type, GpuArrayType):
             raise TypeError('gpu_filter_acts requires CudaNdarray filters',
                     filters)
-        htype = CudaNdarrayType(broadcastable=hbcast)
+        htype = GpuArrayType(broadcastable=hbcast)
         return theano.gof.Apply(self,
                 [images, filters],
                 [htype()])
@@ -333,7 +333,7 @@ class GpuWeightActs(Base):
 
         igroups, icolors, irows, icols, icount = images.type.broadcastable
         hgroups, hcolors, hrows, hcols, hcount = hidacts.type.broadcastable
-        otype = theano.sandbox.cuda.CudaNdarrayType(
+        otype = theano.gpuarray.GpuArrayType(
                 broadcastable=(hrows, hcols, icolors,
                     False, False, hgroups, hcolors))
         return theano.Apply(self,
